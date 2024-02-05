@@ -1,26 +1,29 @@
-﻿//welcome user to dice roller
+﻿
 Console.WriteLine("Welcome to the Dice Roller Game!");
 
-//ask user the number of sides for a pair of dice
-//Need to add try parse to this
-Console.WriteLine("How many sides should each die have? ");
+Console.Write("How many sides should each die have? ");
 int sidesOfDice = int.Parse(Console.ReadLine());
 
-//program will loop if user wants to go again
 bool userEngagement = true;
+int rollCounter = 1;
+while (userEngagement == true)
+{
+    
+    Console.WriteLine($"Roll {rollCounter}:");
+    Console.ReadKey();
 
-while (userEngagement == true) {
-    int rollCounter = 1;
+    int diceRoll1 = RandomDiceRoll(sidesOfDice);
+    int diceRoll2 = RandomDiceRoll(sidesOfDice);
+    int sumOfRolls = diceRoll1 + diceRoll2;
 
+    Console.WriteLine($"You Rolled a {diceRoll1} and a {diceRoll2} ({sumOfRolls} total)");
 
-    //request user rolls the dice
-
-    //application rolls 2 n-sided dice
-
-    //display results of dice roll along with total
-
-    //if 6 sided dice refer to method and display special name if applicable
-
+    if (sidesOfDice == 6)
+    {
+        Console.WriteLine(SixSideDiceCombos(diceRoll1,diceRoll2));
+        Console.WriteLine(SixSideDiceSpecialTotals(diceRoll1,diceRoll2));
+        Console.WriteLine();
+    }
 
 
     Console.WriteLine("Roll again? (y/n): ");
@@ -30,9 +33,10 @@ while (userEngagement == true) {
         Console.WriteLine("Thanks for playing!");
         userEngagement = false;
     }
-    else 
+    else
     {
-        rollCounter++; 
+        rollCounter++;
+        Console.WriteLine();
     }
 
 }
@@ -43,30 +47,46 @@ while (userEngagement == true) {
 
 
 
+int RandomDiceRoll(int diceSides)
+{
+    diceSides++;
+    Random rnd = new Random();
+    int randomDiceRoll = rnd.Next(1, diceSides);
+    return randomDiceRoll;
+}
 
+string SixSideDiceCombos(int dice1, int dice2)
+{
+    if (dice1 == 1 && dice2 == 1)
+    {
+        return "Snake Eyes";
+    }
+    else if ((dice1 == 1 && dice2 == 2) || (dice1 == 2 && dice2 == 1))
+    {
+        return "Ace Deuce";
+    }
+    else if (dice1 == 6 && dice2 == 6)
+    {
+        return "Box Cars";
+    }
+    else
+    {
+        return "";
+    }
+}
 
-
-//method that generates the random numbers for dice rolls
-
-
-
-/*make this a method
- * application will recognize following combination for 6 sided dice
- * no other size will be recognized
- * 
- * snake Eyes: two 1s
- * Ace Deuce: A 1 and 2
- * Box Cars: Two 6s
- * 
- * returns string of valind combos or empty string if not matched
- * */
-
-/*method
-for 6 sided dice take the two dice values returns string for 
-below values
-
-Win: a total of 7 or 11
-Craps: a total of 2,3,or12
-or empty string
- 
- *\
+string SixSideDiceSpecialTotals(int dice1, int dice2)
+{
+    if (dice1 + dice2 == 7 || dice1 + dice2 == 11)
+    {
+        return "Win";
+    }
+    else if (dice1 + dice2 == 2 || dice1 + dice2 == 3 || dice1 + dice2 == 12)
+    {
+        return "Craps";
+    }
+    else
+    {
+        return "";
+    }
+}
